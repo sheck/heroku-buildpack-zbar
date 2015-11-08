@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir>
+
+set -e
+set -o pipefail
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+ENV_DIR=$3
+
+function indent() {
+  c='s/^/       /'
+  case $(uname) in
+    Darwin) sed -l "$c";;
+    *)      sed -u "$c";;
+  esac
+}
+
+# check for ZBAR_LIB
+echo_zbar_error() {
+  echo "Running the following command may fix this:" | indent
+  echo "heroku config:set ZBAR_LIB=vendor/lib/libzbar.so" | indent
+}
+for KEY in ZBAR_LIB; do
+  [ -f $ENV_DIR/$KEY ] && export "$KEY=$(cat $ENV_DIR/$KEY)"
+  [ -z "${!KEY}" ] && echo "You didn't set $KEY, and this is required." && echo_zbar_error && exit 1
+done
+if [ "$ZBAR_LIB" != "vendor/lib/libzbar.so" ]; then
+  echo "ZBAR_LIB was not properly set. Cannot continue."
+  echo_zbar_error
+  exit 1
+fi
+
+cd $BUILD_DIR
+
+# download
+echo "-----> Downloading"
+ZBAR_URL="http://iweb.dl.sourceforge.net/project/zbar/zbar/0.10/zbar-0.10.tar.bz2"
+curl $ZBAR_URL -s -o - | tar jxf - -C $BUILD_DIR
+
+cd zbar-0.10
+
+# patching
+echo "-----> Applying JPEG patch"
+patch -p1 <<EOF
+diff --git a/zbar/jpeg.c b/zbar/jpeg.c
+index fb566f4..d1c1fb2 100644
+--- a/zbar/jpeg.c
++++ b/zbar/jpeg.c
+@@ -79,8 +79,15 @@ int fill_input_buffer (j_decompress_ptr cinfo)
+ void skip_input_data (j_decompress_ptr cinfo,
+                       long num_bytes)
+ {
+-    cinfo->src->next_input_byte = NULL;
+-    cinfo->src->bytes_in_buffer = 0;
++    if (num_bytes > 0) {
++        if (num_bytes < cinfo->src->bytes_in_buffer) {
++            cinfo->src->next_input_byte += num_bytes;
++            cinfo->src->bytes_in_buffer -= num_bytes;
++        }
++        else {
++            fill_input_buffer(cinfo);
++        }
++    }
+ }
+
+ void term_source (j_decompress_ptr cinfo)
+EOF
+
+# configure
+if [ -f configure ]; then
+  echo "-----> Configuring"
+  CFLAGS="" ./configure --disable-video --without-gtk --without-qt --prefix=$BUILD_DIR/vendor >/dev/null 2>&1
+fi
+
+# make
+echo "-----> Compiling with Make"
+make >/dev/null 2>&1
+make install >/dev/null 2>&1

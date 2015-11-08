@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# bin/detect <build-dir>
+
+if [ -f $1/vendor/bin/zbarimg ]; then
+  echo "no" && exit 1
+else
+  echo "ZBAR" && exit 0
+fi
