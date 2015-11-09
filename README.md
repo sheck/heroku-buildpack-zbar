@@ -18,4 +18,8 @@ Requirements
   1. https://github.com/sheck/heroku-buildpack-zbar
   2. heroku/ruby
 ````
-if it does not, remove the ruby buildpack and re-add it to move it to the bottom.
+if it does not, remove the ruby buildpack and re-add it to move it to the bottom
+
+### Todo
+
+- [ ] Cache zbar library so future builds are faster
