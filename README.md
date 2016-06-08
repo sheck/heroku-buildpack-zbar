@@ -1,7 +1,7 @@
 Heroku buildpack: ZBAR
 ======================
 
-This is a [Heroku buildpack](http://devcenter.heroku.com/articles/buildpacks) for apps requiring ZBAR as a dependency. It is configured to work with the [ruby zbar gem](https://github.com/willglynn/ruby-zbar) but should work with other stacks.
+This is a [Heroku buildpack](http://devcenter.heroku.com/articles/buildpacks) for apps requiring ZBAR as a dependency. It is configured to work with the [ruby zbar gem](https://github.com/willglynn/ruby-zbar) but should work with other stacks. This buildpack also applies a [patch to Zbar](https://bugs.launchpad.net/ubuntu/+source/zbar/+bug/1185157) that fixes some jpeg issues, and is required for ruby zbar to work.
 
 Adding to an existing Ruby App
 ---------------
