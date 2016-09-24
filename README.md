@@ -29,3 +29,7 @@ if it does not, remove the ruby buildpack and re-add it to move it to the bottom
 ### Continuous Integration Setup
 
 Setting up the patched version of Zbar on a CI server can be pain. Here's how I got it running on Circle CI: https://gist.github.com/sheck/475e0c8f2d9f618f1eca
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/sheck/heroku-buildpack-zbar/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
