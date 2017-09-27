@@ -35,7 +35,7 @@ cd $BUILD_DIR
 
 # download
 echo "-----> Downloading"
-ZBAR_URL="https://sourceforge.net/projects/zbar/files/zbar/0.10/zbar-0.10.tar.bz2/download"
+ZBAR_URL="https://github.com/ZBar/ZBar/archive/0.10.tar.gz"
 curl -L $ZBAR_URL -s -o - | tar jxf - -C $BUILD_DIR
 
 cd zbar-0.10
