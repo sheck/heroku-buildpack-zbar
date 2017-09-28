@@ -38,7 +38,7 @@ echo "-----> Downloading"
 ZBAR_URL="https://github.com/sheck/ZBar/archive/0.10-sourceforge.tar.gz"
 curl -L $ZBAR_URL -s | tar zx -C $BUILD_DIR
 
-cd ZBar-0.10
+cd ZBar-0.10-sourceforge
 
 # patching
 echo "-----> Applying JPEG patch"
