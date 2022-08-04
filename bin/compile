@@ -75,5 +75,5 @@ fi
 
 # make
 echo "-----> Compiling with Make"
-make >/dev/null 2>&1
-make install >/dev/null 2>&1
+make
+make install
