@@ -1,3 +1,8 @@
+August 2022 Note: This repo will soon be archived. See [this comment](https://github.com/sheck/heroku-buildpack-zbar/issues/11#issuecomment-1205685356) for more info.
+
+---
+
+
 Heroku buildpack: ZBAR
 ======================
 
